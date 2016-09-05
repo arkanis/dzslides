@@ -173,6 +173,7 @@
     -webkit-transition: none;
     -ms-transition: none;
     transition: none;
+    opacity: 1 !important;
   }
 
   .view section[aria-selected] {
@@ -475,19 +476,24 @@
     // If the user change the slide number in the URL bar, jump
     // to this slide.
     aStep = (aStep != 0 && typeof aStep !== "undefined") ? "." + aStep : ".0";
-    window.location.hash = "#" + aIdx + aStep;
+    aOverview = this.html.classList.contains("view") ? ".o" : "";
+    window.location.hash = "#" + aIdx + aStep + aOverview;
   }
 
   Dz.onhashchange = function() {
     var cursor = window.location.hash.split("#"),
         newidx = 1,
-        newstep = 0;
+        newstep = 0,
+        inOverview = false;
     if (cursor.length == 2) {
       newidx = ~~cursor[1].split(".")[0];
       newstep = ~~cursor[1].split(".")[1];
       if (newstep > Dz.slides[newidx - 1].$$('.incremental > *').length) {
         newstep = 0;
         newidx++;
+      }
+      if (cursor[1].split(".").indexOf("o") !== -1) {
+        inOverview = true;
       }
     }
     this.setProgress(newidx, newstep);
@@ -496,6 +502,9 @@
     }
     if (newstep != this.step) {
       this.setIncremental(newstep);
+    }
+    if (inOverview) {
+      this.html.classList.add("view");
     }
     for (var i = 0; i < this.remoteWindows.length; i++) {
       this.postMsg(this.remoteWindows[i], "CURSOR", this.idx + "." + this.step);
@@ -538,6 +547,7 @@
 
   Dz.toggleView = function() {
     this.html.classList.toggle("view");
+    this.setCursor(this.idx, this.step);
 
     if (this.html.classList.contains("view")) {
       $("section[aria-selected]").scrollIntoView(true);
