@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<head$if(lang)$ lang="$lang$"$endif$$if(dir)$ dir="$dir$"$endif$>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+$for(author-meta)$
+  <meta name="author" content="$author-meta$">
+$endfor$
+$if(date-meta)$
+  <meta name="dcterms.date" content="$date-meta$">
+$endif$
+$if(keywords)$
+  <meta name="keywords" content="$for(keywords)$$keywords$$sep$, $endfor$">
+$endif$
+  <title>$if(title-prefix)$$title-prefix$ – $endif$$pagetitle$</title>
+  <style type="text/css">code{white-space: pre;}</style>
+$if(quotes)$
+  <style type="text/css">q { quotes: "“" "”" "‘" "’"; }</style>
+$endif$
+$if(highlighting-css)$
+  <style type="text/css">
+$highlighting-css$
+  </style>
+$endif$
+$if(css)$
+$for(css)$
+  <link rel="stylesheet" href="$css$">
+$endfor$
+$else$
+
+<!-- Your Style -->
+<!-- Define the style of your presentation -->
+
+<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet">
+<style>
+	/*
+	Combined from:
+	https://github.com/yhatt/marp/blob/master/sass/themes/default.sass
+	https://github.com/sindresorhus/github-markdown-css/blob/gh-pages/github-markdown.css
+	Goal is something like that:
+	https://speakerdeck.com/yhatt/marp-basic-example
+	*/
+	
+	/* Overview styles */
+	.view { background: black; }
+	.view body { counter-reset: slideidx; }
+	.view section { background-color: white; border-radius: 12px }
+	.view section[aria-selected] { box-shadow: 0 0 5px 5px red; }
+	.view section:after { counter-increment: slideidx; content: counter(slideidx, decimal-leading-zero);
+		position: absolute; bottom: -80px; right: 100px; color: white; font-size: 45opx; }
+	.view head > title { color: white; text-align: center; margin: 1em 0 1em 0; }
+	
+	/* Slide styles. A section is a slide. It's size is 800x600, and this will never change. */
+	html { background-color: black; font-size: 29px; line-height: 1.5;
+		/* font-family: 'Open Sans', sans-serif; */ /* to sharp */
+		/* font-family: 'Roboto', sans-serif; */ /* too heavy */
+		font-family: 'Source Sans Pro', sans-serif; /* nice spacing, relaxed style */
+		}
+	code, kbd, pre { font-family: 'Source Code Pro', monospace; }
+	body { background-color: white; }
+	section { display: flex; flex-direction: column; justify-content: center; padding: 0 60px;
+		color: #333;  word-wrap: break-word; }
+	section footer { font-size: 18px; color: #666; opacity: 0.75; }
+	
+	h1, h2, h3, h4, h5, h6 { margin: 24px 0 16px 0; padding: 0; line-height: 1.25; font-weight: bold; letter-spacing: 1px; }
+	h1 { font-size: 1.6em; margin: 30px 0; padding: 0 0 15px 0; color: #246; }
+	h2 { font-size: 1.3em; padding: 0 0 13px 0; }
+	h3 { font-size: 1.1em; }
+	h4 { font-size: 1.05em; }
+	h5 { font-size: 1em; }
+	h6 { font-size: 0.9em; color: #777; }
+	
+	p, ul, ol, dl, table, pre, blockquote, hr { margin: 0 0 10px 0; padding: 0; }
+	p { }
+	
+	ul, ol { margin: 0 0 16px 0; padding: 0 0 0 35px; }
+	ul { list-style-type: disc; }
+	li { margin: 0; padding: 0; }
+	li > p { margin: 0; padding: 0; }
+	li + li { margin: 8px 0 0 0; }
+	section > h1 + ul { list-style: none; padding: 0; }
+	section > h1 + ul > li { margin: 16px 0 0 0; padding: 0; }
+	section > h1 + ul > li:first-child { margin: 0; padding: 0; }
+	
+	dl { }
+	dl dt { margin: 10px 0 0 0; padding: 0; font-style: italic; font-weight: bold; }
+	dl dt:first-child { margin-top: 0; }
+	dl dd { margin: 8px 0 0 0; padding: 0 0 0 16px; }
+	
+	table { border-spacing: 0; border-collapse: collapse; }
+	table th { font-weight: bold; }
+	td, th { padding: 6px 13px; border: 1px solid #ddd; }
+	table tr { background-color: #fff; border-top: 1px solid #ccc; }
+	table tbody tr:nth-child(2n+1) { background-color: #f8f8f8; }
+	
+	pre { padding: 16px; overflow: auto;
+		word-wrap: normal;  font-size: 85%; line-height: 1.45;
+		background-color: #f7f7f7; border: 1px solid #999; border-radius: 3px; }
+	pre > code { padding: 0; margin: 0;
+		font-size: 100%; word-break: normal; white-space: pre;
+		background: inherit; border-radius: none; }
+	
+	blockquote { padding: 0 0 0 15px; color: #777; border-left: 0.25em solid #ddd; }
+	blockquote > :first-child { margin-top: 0; }
+	blockquote > :last-child { margin-bottom: 0; }
+	
+	hr { height: 3px; overflow: visible; 
+		background-color: #e7e7e7; border: 0; border-bottom: 1px solid #ddd; }
+	
+	img { max-width: 100%; border-style: none; background-color: #fff; }
+	svg:not(:root) { overflow: hidden; }
+	
+	a { color: #4078c0; text-decoration: none; }
+	a:hover, a:active { text-decoration: underline; }
+	
+	code, kbd { font-size: 1em; }
+	code { margin: 0; padding: 0.2em 0; font-size: 85%;
+		background-color: rgba(0,0,0,0.04); border-radius: 5px; }
+	code::before, code::after { letter-spacing: -0.2em; content: "\00a0"; }
+	kbd { display: inline-block; padding: 2px 6px 6px 6px;
+		font-size: 22px; line-height: 20px; vertical-align: 1px; letter-spacing: -1px;
+		color: #555; background-color: #fcfcfc;
+		border: solid 2px #ccc; border-bottom-color: #bbb; border-radius: 5px;
+		box-shadow: inset 0 -2px 0 #bbb; }
+	
+	section > *:first-child { margin-top: 0 !important; }
+	section > *:last-child { margin-bottom: 0 !important; }
+	
+	/* Special styles for the title slide */
+	section.title h1::first-line { font-size: 36px; line-height: 1.5; }
+	section.title footer span { display: block; }
+	
+
+	/* Transition effect */
+	/* Feel free to change the transition effect for original animations.
+	See here: https://developer.mozilla.org/en/CSS/CSS_transitions How to use CSS3 Transitions: */
+	section {
+		-moz-transition: opacity 200ms linear 0s;
+		-webkit-transition: opacity 200ms linear 0s;
+		-ms-transition: opacity 200ms linear 0s;
+		transition: opacity 200ms linear 0s;
+	}
+	.view section {
+		-moz-transition: none;
+		-webkit-transition: none;
+		-ms-transition: none;
+		transition: none;
+		opacity: 1 !important;
+	}
+	
+	/* Before */
+	section { opacity: 0; }
+	/* Now */
+	section[aria-selected] { opacity: 1; }
+	/* After */
+	section[aria-selected] ~ section { opacity: 0; }
+	
+	/* Incremental elements */
+	
+	/* By default, visible */
+	.incremental > * { opacity: 1; }
+	
+	/* The current item */
+	.incremental > *[aria-selected] { opacity: 1; }
+	
+	/* The items to-be-selected */
+	.incremental > *[aria-selected] ~ * { opacity: 0; }
+	
+	/* The progressbar, at the bottom of the slides, show the global progress of the presentation. */
+	#progress-bar { height: 2px; background: #AAA; }
+</style>
+
+$endif$
+$if(math)$
+  $math$
+$endif$
+$for(header-includes)$
+  $header-includes$
+$endfor$
+</head>
+<body>
+$if(title)$
+<section class="title">
+  <h1 class="title">$title$</h1>
+$if(subtitle)$
+  <h1 class="subtitle">$subtitle$</h1>
+$endif$
+  <footer>
+    $if(author)$<span class="author">$for(author)$$author$$sep$, $endfor$</span>$endif$
+    $if(date)$<span class="date">$date$</span>$endif$
+  </footer>
+</section>
+$endif$
+$if(toc)$
+<section id="$idprefix$TOC">
+$toc$
+</section>
+$endif$
+$for(include-before)$
+$include-before$
+$endfor$
+$body$
+$for(include-after)$
+$include-after$
+$endfor$
+<!-- {{{{ dzslides core
+#
+#
+#     __  __  __       .  __   ___  __
+#    |  \  / /__` |    | |  \ |__  /__`
+#    |__/ /_ .__/ |___ | |__/ |___ .__/ core :€
+#
+#
+# The following block of code is not supposed to be edited.
+# But if you want to change the behavior of these slides,
+# feel free to hack it!
+#
+-->
+
+<div id="progress-bar"></div>
+
+<!-- Default Style -->
+<style>
+  * { margin: 0; padding: 0; -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; }
+  [role="note"] { display: none; }
+  body {
+    width: 800px; height: 600px;
+    margin-left: -400px; margin-top: -300px;
+    position: absolute; top: 50%; left: 50%;
+    overflow: hidden;
+    display: none;
+  }
+  .view body {
+    position: static;
+    margin: 0; padding: 0;
+    width: 100%; height: 100%;
+    display: inline-block;
+    overflow: visible; overflow-x: hidden;
+    /* undo Dz.onresize */
+    transform: none !important;
+    -moz-transform: none !important;
+    -webkit-transform: none !important;
+    -o-transform: none !important;
+    -ms-transform: none !important;
+  }
+  .view head, .view head > title { display: block }
+  section {
+    position: absolute;
+    pointer-events: none;
+    width: 100%; height: 100%;
+  }
+  .view section {
+    pointer-events: auto;
+    position: static;
+    width: 800px; height: 600px;
+    margin: -150px -200px;
+    float: left;
+
+    transform: scale(.4);
+    -moz-transform: scale(.4);
+    -webkit-transform: scale(.4);
+    -o-transform: scale(.4);
+    -ms-transform: scale(.4);
+  }
+  .view section > * { pointer-events: none; }
+  section[aria-selected] { pointer-events: auto; }
+  html { overflow: hidden; }
+  html.view { overflow: visible; }
+  body.loaded { display: block; }
+  .incremental {visibility: hidden; }
+  .incremental[active] {visibility: visible; }
+  #progress-bar{
+    bottom: 0;
+    position: absolute;
+    -moz-transition: width 400ms linear 0s;
+    -webkit-transition: width 400ms linear 0s;
+    -ms-transition: width 400ms linear 0s;
+    transition: width 400ms linear 0s;
+  }
+  .view #progress-bar {
+    display: none;
+  }
+</style>
+
+<script>
+  var Dz = {
+    remoteWindows: [],
+    idx: -1,
+    step: 0,
+    html: null,
+    slides: null,
+    progressBar : null,
+    params: {
+      autoplay: "1"
+    }
+  };
+
+  Dz.init = function() {
+    document.body.className = "loaded";
+    this.slides = Array.prototype.slice.call(find_all("body > section"));
+    this.progressBar = find("#progress-bar");
+    this.html = document.body.parentNode;
+    this.setupParams();
+    this.onhashchange();
+    this.setupTouchEvents();
+    this.onresize();
+    this.setupView();
+  }
+
+  Dz.setupParams = function() {
+    var p = window.location.search.substr(1).split('&');
+    p.forEach(function(e, i, a) {
+      var keyVal = e.split('=');
+      Dz.params[keyVal[0]] = decodeURIComponent(keyVal[1]);
+    });
+  // Specific params handling
+    if (!+this.params.autoplay)
+      find_all.forEach(find_all("video"), function(v){ v.controls = true });
+  }
+
+  Dz.onkeydown = function(aEvent) {
+    // Don't intercept keyboard shortcuts
+    if (aEvent.altKey
+      || aEvent.ctrlKey
+      || aEvent.metaKey
+      || aEvent.shiftKey) {
+      return;
+    }
+    if ( aEvent.keyCode == 37 // left arrow
+      || aEvent.keyCode == 38 // up arrow
+      || aEvent.keyCode == 33 // page up
+    ) {
+      aEvent.preventDefault();
+      this.back();
+    }
+    if ( aEvent.keyCode == 39 // right arrow
+      || aEvent.keyCode == 40 // down arrow
+      || aEvent.keyCode == 34 // page down
+    ) {
+      aEvent.preventDefault();
+      this.forward();
+    }
+    if (aEvent.keyCode == 35) { // end
+      aEvent.preventDefault();
+      this.goEnd();
+    }
+    if (aEvent.keyCode == 36) { // home
+      aEvent.preventDefault();
+      this.goStart();
+    }
+    if (aEvent.keyCode == 32) { // space
+      aEvent.preventDefault();
+      this.toggleContent();
+    }
+    if (aEvent.keyCode == 70) { // f
+      aEvent.preventDefault();
+      this.goFullscreen();
+    }
+    if (aEvent.keyCode == 79) { // o
+      aEvent.preventDefault();
+      this.toggleView();
+    }
+  }
+
+  /* Touch Events */
+
+  Dz.setupTouchEvents = function() {
+    var orgX, newX;
+    var tracking = false;
+
+    var db = document.body;
+    db.addEventListener("touchstart", start.bind(this), false);
+    db.addEventListener("touchmove", move.bind(this), false);
+
+    function start(aEvent) {
+      aEvent.preventDefault();
+      tracking = true;
+      orgX = aEvent.changedTouches[0].pageX;
+    }
+
+    function move(aEvent) {
+      if (!tracking) return;
+      newX = aEvent.changedTouches[0].pageX;
+      if (orgX - newX > 100) {
+        tracking = false;
+        this.forward();
+      } else {
+        if (orgX - newX < -100) {
+          tracking = false;
+          this.back();
+        }
+      }
+    }
+  }
+
+  Dz.setupView = function() {
+    document.body.addEventListener("click", function ( e ) {
+      if (!Dz.html.classList.contains("view")) return;
+      if (!e.target || e.target.nodeName != "SECTION") return;
+
+      Dz.html.classList.remove("view");
+      Dz.setCursor(Dz.slides.indexOf(e.target) + 1);
+    }, false);
+  }
+
+  /* Adapt the size of the slides to the window */
+
+  Dz.onresize = function() {
+    var db = document.body;
+    var sx = db.clientWidth / window.innerWidth;
+    var sy = db.clientHeight / window.innerHeight;
+    var transform = "scale(" + (1/Math.max(sx, sy)) + ")";
+
+    db.style.MozTransform = transform;
+    db.style.WebkitTransform = transform;
+    db.style.OTransform = transform;
+    db.style.msTransform = transform;
+    db.style.transform = transform;
+  }
+
+
+  Dz.getNotes = function(aIdx) {
+    var s = find("section:nth-of-type(" + aIdx + ")");
+    var d = s.find("[role='note']");
+    return d ? d.innerHTML : "";
+  }
+
+  Dz.onmessage = function(aEvent) {
+    var argv = aEvent.data.split(" "), argc = argv.length;
+    argv.forEach(function(e, i, a) { a[i] = decodeURIComponent(e) });
+    var win = aEvent.source;
+    if (argv[0] === "REGISTER" && argc === 1) {
+      this.remoteWindows.push(win);
+      this.postMsg(win, "REGISTERED", document.title, this.slides.length);
+      this.postMsg(win, "CURSOR", this.idx + "." + this.step);
+      return;
+    }
+    if (argv[0] === "BACK" && argc === 1)
+      this.back();
+    if (argv[0] === "FORWARD" && argc === 1)
+      this.forward();
+    if (argv[0] === "START" && argc === 1)
+      this.goStart();
+    if (argv[0] === "END" && argc === 1)
+      this.goEnd();
+    if (argv[0] === "TOGGLE_CONTENT" && argc === 1)
+      this.toggleContent();
+    if (argv[0] === "SET_CURSOR" && argc === 2)
+      window.location.hash = "#" + argv[1];
+    if (argv[0] === "GET_CURSOR" && argc === 1)
+      this.postMsg(win, "CURSOR", this.idx + "." + this.step);
+    if (argv[0] === "GET_NOTES" && argc === 1)
+      this.postMsg(win, "NOTES", this.getNotes(this.idx));
+  }
+
+  Dz.toggleContent = function() {
+    // If a Video is present in this new slide, play it.
+    // If a Video is present in the previous slide, stop it.
+    var s = find("section[aria-selected]");
+    if (s) {
+      var video = s.find("video");
+      if (video) {
+        if (video.ended || video.paused) {
+          video.play();
+        } else {
+          video.pause();
+        }
+      }
+    }
+  }
+
+  Dz.setCursor = function(aIdx, aStep) {
+    // If the user change the slide number in the URL bar, jump
+    // to this slide.
+    aStep = (aStep != 0 && typeof aStep !== "undefined") ? "." + aStep : ".0";
+    aOverview = this.html.classList.contains("view") ? ".o" : "";
+    window.location.hash = "#" + aIdx + aStep + aOverview;
+  }
+
+  Dz.onhashchange = function() {
+    var cursor = window.location.hash.split("#"),
+        newidx = 1,
+        newstep = 0,
+        inOverview = false;
+    if (cursor.length == 2) {
+      newidx = ~~cursor[1].split(".")[0];
+      newstep = ~~cursor[1].split(".")[1];
+      if (newstep > Dz.slides[newidx - 1].find_all('.incremental > *').length) {
+        newstep = 0;
+        newidx++;
+      }
+      if (cursor[1].split(".").indexOf("o") !== -1) {
+        inOverview = true;
+      }
+    }
+    this.setProgress(newidx, newstep);
+    if (newidx != this.idx) {
+      this.setSlide(newidx);
+    }
+    if (newstep != this.step) {
+      this.setIncremental(newstep);
+    }
+    if (inOverview) {
+      this.html.classList.add("view");
+    }
+    for (var i = 0; i < this.remoteWindows.length; i++) {
+      this.postMsg(this.remoteWindows[i], "CURSOR", this.idx + "." + this.step);
+    }
+  }
+
+  Dz.back = function() {
+    if (this.idx == 1 && this.step == 0) {
+      return;
+    }
+    if (this.step == 0) {
+      this.setCursor(this.idx - 1,
+                     this.slides[this.idx - 2].find_all('.incremental > *').length);
+    } else {
+      this.setCursor(this.idx, this.step - 1);
+    }
+  }
+
+  Dz.forward = function() {
+    if (this.idx >= this.slides.length &&
+        this.step >= this.slides[this.idx - 1].find_all('.incremental > *').length) {
+        return;
+    }
+    if (this.step >= this.slides[this.idx - 1].find_all('.incremental > *').length) {
+      this.setCursor(this.idx + 1, 0);
+    } else {
+      this.setCursor(this.idx, this.step + 1);
+    }
+  }
+
+  Dz.goStart = function() {
+    this.setCursor(1, 0);
+  }
+
+  Dz.goEnd = function() {
+    var lastIdx = this.slides.length;
+    var lastStep = this.slides[lastIdx - 1].find_all('.incremental > *').length;
+    this.setCursor(lastIdx, lastStep);
+  }
+
+  Dz.toggleView = function() {
+    this.html.classList.toggle("view");
+    this.setCursor(this.idx, this.step);
+
+    if (this.html.classList.contains("view")) {
+      find("section[aria-selected]").scrollIntoView(true);
+    }
+  }
+
+  Dz.setSlide = function(aIdx) {
+    this.idx = aIdx;
+    var old = find("section[aria-selected]");
+    var next = find("section:nth-of-type("+ this.idx +")");
+    if (old) {
+      old.removeAttribute("aria-selected");
+      var video = old.find("video");
+      if (video) {
+        video.pause();
+      }
+    }
+    if (next) {
+      next.setAttribute("aria-selected", "true");
+      if (this.html.classList.contains("view")) {
+        next.scrollIntoView();
+      }
+      var video = next.find("video");
+      if (video && !!+this.params.autoplay) {
+        video.play();
+      }
+    } else {
+      // That should not happen
+      this.idx = -1;
+      // console.warn("Slide doesn't exist.");
+    }
+  }
+
+  Dz.setIncremental = function(aStep) {
+    this.step = aStep;
+    var old = this.slides[this.idx - 1].find('.incremental > *[aria-selected]');
+    if (old) {
+      old.removeAttribute('aria-selected');
+    }
+    var incrementals = find_all('.incremental');
+    if (this.step <= 0) {
+      find_all.forEach(incrementals, function(aNode) {
+        aNode.removeAttribute('active');
+      });
+      return;
+    }
+    var next = this.slides[this.idx - 1].find_all('.incremental > *')[this.step - 1];
+    if (next) {
+      next.setAttribute('aria-selected', true);
+      next.parentNode.setAttribute('active', true);
+      var found = false;
+      find_all.forEach(incrementals, function(aNode) {
+        if (aNode != next.parentNode)
+          if (found)
+            aNode.removeAttribute('active');
+          else
+            aNode.setAttribute('active', true);
+        else
+          found = true;
+      });
+    } else {
+      setCursor(this.idx, 0);
+    }
+    return next;
+  }
+
+  Dz.goFullscreen = function() {
+    var html = find('html'),
+        requestFullscreen = html.requestFullscreen || html.requestFullScreen || html.mozRequestFullScreen || html.webkitRequestFullScreen;
+    if (requestFullscreen) {
+      requestFullscreen.apply(html);
+    }
+  }
+  
+  Dz.setProgress = function(aIdx, aStep) {
+    var slide = find("section:nth-of-type("+ aIdx +")");
+    if (!slide)
+      return;
+    var steps = slide.find_all('.incremental > *').length + 1,
+        slideSize = 100 / (this.slides.length - 1),
+        stepSize = slideSize / steps;
+    this.progressBar.style.width = ((aIdx - 1) * slideSize + aStep * stepSize) + '%';
+  }
+  
+  Dz.postMsg = function(aWin, aMsg) { // [arg0, [arg1...]]
+    aMsg = [aMsg];
+    for (var i = 2; i < arguments.length; i++)
+      aMsg.push(encodeURIComponent(arguments[i]));
+    aWin.postMessage(aMsg.join(" "), "*");
+  }
+  
+  function init() {
+    Dz.init();
+    window.onkeydown = Dz.onkeydown.bind(Dz);
+    window.onresize = Dz.onresize.bind(Dz);
+    window.onhashchange = Dz.onhashchange.bind(Dz);
+    window.onmessage = Dz.onmessage.bind(Dz);
+  }
+
+  window.onload = init;
+</script>
+
+
+<script> // Helpers
+  if (!Function.prototype.bind) {
+    Function.prototype.bind = function (oThis) {
+
+      // closest thing possible to the ECMAScript 5 internal IsCallable
+      // function 
+      if (typeof this !== "function")
+      throw new TypeError(
+        "Function.prototype.bind - what is trying to be fBound is not callable"
+      );
+
+      var aArgs = Array.prototype.slice.call(arguments, 1),
+          fToBind = this,
+          fNOP = function () {},
+          fBound = function () {
+            return fToBind.apply( this instanceof fNOP ? this : oThis || window,
+                   aArgs.concat(Array.prototype.slice.call(arguments)));
+          };
+
+      fNOP.prototype = this.prototype;
+      fBound.prototype = new fNOP();
+
+      return fBound;
+    };
+  }
+
+  var find = (HTMLElement.prototype.find = function(aQuery) {
+    return this.querySelector(aQuery);
+  }).bind(document);
+
+  var find_all = (HTMLElement.prototype.find_all = function(aQuery) {
+    return this.querySelectorAll(aQuery);
+  }).bind(document);
+
+  find_all.forEach = function(nodeList, fun) {
+    Array.prototype.forEach.call(nodeList, fun);
+  }
+
+</script>
+<!-- vim: set fdm=marker: }}} -->
+</body>
+</html>
